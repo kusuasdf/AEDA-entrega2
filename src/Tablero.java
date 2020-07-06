@@ -1,3 +1,5 @@
+
+
 public class Tablero{
   static java.util.Random generator = new java.util.Random();
   private char [][] t;
