@@ -2,7 +2,7 @@
 
 public class Tablero{
   static java.util.Random generator = new java.util.Random();
-  private char [][] t;
+  public char [][] t;
   private int intentos = 0;
   public Tablero(int n){
     if(n<10) n=10;
