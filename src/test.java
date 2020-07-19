@@ -1,648 +1,216 @@
 import java.util.Scanner;
 public class test {
     static java.util.Random generator = new java.util.Random();
-    static char[][]t;
+    public static char[][]t;
     static int cant_A=5;
     static int cant_B=4;
     static int cant_C=3;
     static int cant_S=3;
     static int cant_D=2;
+    static int cant;
     static int [][] color_map;
     static Tablero game;
 
     static void destroy(int auxx, int auxy){
         //System.out.println("disparanding");
         char aux= game.disparo(auxx,auxy);
+        System.out.println("destroy en ["+auxx+"]["+auxy+"]");
        // System.out.println("disparanding "+ aux);
         if(aux=='A'){
-            destroyA(auxx,auxy);
+            destroyByChar(auxx,auxy, 'A');
         }
         if(aux=='B'){
-            destroyB(auxx,auxy);
+            destroyByChar(auxx,auxy, 'B');
         }
         if(aux=='C'){
-            destroyC(auxx,auxy);
+            destroyByChar(auxx,auxy, 'C');
         }
         if(aux=='S'){
-            destroyS(auxx,auxy);
+            destroyByChar(auxx,auxy, 'S');
         }
         if(aux=='D'){
-            destroyD(auxx,auxy);
+            destroyByChar(auxx,auxy, 'D');
         }
         if(aux=='0'){
             t[auxx][auxy]='f';
           //  System.out.println("f");
         }
         if(aux=='X'){
-            System.out.println("la cagamos tamo en X");
+            //System.out.println("la cagamos tamo en X");
+
         }
     }
 
-    private static void destroyS(int auxx, int auxy) {
-        System.out.println("destroyS");
+    private static void destroyByChar(int auxx, int auxy, char tipo) {
+        if(tipo == 'A'){
+            cant = 5;
+        }else if(tipo == 'B'){
+            cant = 4;
+        }else if(tipo == 'C'){
+            cant = 3;
+        }else if(tipo == 'S'){
+            cant = 3;
+        }else if(tipo == 'D'){
+            cant = 2;
+        }else{
+            System.out.println("hermano por que entraste aca?");
+            cant = 1;
+        }
+        System.out.println("destroy"+tipo);
         int move=1;
         char aux;
-        cant_S--;
+        cant--;
         t[auxx][auxy]='X';
         //Try up
-        while (cant_S!=0 && auxy-move>=1){
+        while (cant!=0 && auxy-move>=1){
             if (color_map[auxx][auxy-move]!=0) {
                 aux=game.disparo(auxx,auxy-move);
-                switch (aux){
-                    case 'A':   destroyA(auxx,auxy-move);
-                        move++;
-                        break;
-                    case 'D':   destroyD(auxx,auxy-move);
-                        move++;
-                        break;
-                    case 'C':   destroyC(auxx,auxy-move);
-                        move++;
-                        break;
-                    case 'B':   destroyB(auxx,auxy-move);
-                        move++;
-                        break;
-                    case 'S':   move++;
-                        cant_S--;
-                        t[auxx][auxy-move]='X';
-                        break;
+                if(aux != tipo){
+                    switch (aux){
+                        case 'A':   destroyByChar(auxx,auxy-move, 'A');
+                            move++;
+                            break;
+                        case 'D':   destroyByChar(auxx,auxy-move, 'D');
+                            move++;
+                            break;
+                        case 'C':   destroyByChar(auxx,auxy-move, 'C');
+                            move++;
+                            break;
+                        case 'B':   destroyByChar(auxx,auxy-move, 'B');
+                            move++;
+                            break;
+                        case 'S': destroyByChar(auxx,auxy-move, 'S');
+                            move++;
+                            break;
+                    }
+                }else{
+                    System.out.println("\t tipo: "+tipo+", destroy en ["+auxx+"]["+(auxy-move)+"]");
+                    t[auxx][auxy-move]='X';
+                    move++;
+                    cant--;
                 }
                 if (aux=='0'){
-                    move++;
                     t[auxx][auxy-move]='f';
+                    move++;
                     break;
                 }
+            }else{
+                break;
             }
-            break;
+
         }
         move=1;
         //Try down
-        while (cant_S!=0 && auxy+cant_S<=11){
+        while (cant!=0 && auxy+cant<=11){
             if (color_map[auxx][auxy+move]!=0) {
                 aux=game.disparo(auxx,auxy+move);
-                switch (aux){
-                    case 'A':   destroyA(auxx,auxy+move);
-                        move++;
-                        break;
-                    case 'D':   destroyD(auxx,auxy+move);
-                        move++;
-                        break;
-                    case 'C':   destroyC(auxx,auxy+move);
-                        move++;
-                        break;
-                    case 'B':   destroyB(auxx,auxy+move);
-                        move++;
-                        break;
-                    case 'S':   move++;
-                        cant_S--;
-                        t[auxx][auxy+move]='X';
-                        break;
+                if(aux != tipo){
+                    switch (aux){
+                        case 'A':   destroyByChar(auxx,auxy+move, 'A');
+                            move++;
+                            break;
+                        case 'D':   destroyByChar(auxx,auxy+move, 'D');
+                            move++;
+                            break;
+                        case 'C':   destroyByChar(auxx,auxy+move, 'C');
+                            move++;
+                            break;
+                        case 'B':   destroyByChar(auxx,auxy+move, 'B');
+                            move++;
+                            break;
+                        case 'S':   destroyByChar(auxx,auxy+move, 'S');
+                            move++;
+                            break;
+                    }
+                }else{
+                    System.out.println("\t tipo: "+tipo+", destroy en ["+auxx+"]["+(auxy+move)+"]");
+                    t[auxx][auxy+move]='X';
+                    move++;
+                    cant--;
                 }
                 if (aux=='0'){
-                    move++;
                     t[auxx][auxy+move]='f';
+                    move++;
                     break;
                 }
+            }else{
+                break;
             }
-            break;
         }
         move=1;
         //Try left
-        while (cant_S!=0 && auxx-cant_S>=1){
+        while (cant!=0 && auxx-cant>=1){
             if (color_map[auxx-move][auxy]!=0) {
                 aux=game.disparo(auxx-move,auxy);
-                switch (aux){
-                    case 'A':   destroyA(auxx-move,auxy);
-                        move++;
-                        break;
-                    case 'D':   destroyD(auxx-move,auxy);
-                        move++;
-                        break;
-                    case 'C':   destroyC(auxx-move,auxy);
-                        move++;
-                        break;
-                    case 'B':   destroyB(auxx-move,auxy);
-                        move++;
-                        break;
-                    case 'S':   move++;
-                        cant_S--;
-                        t[auxx-move][auxy]='X';
-                        break;
-                }
-                if (aux=='0'){
+                if(aux != tipo){
+                    switch (aux){
+                        case 'A':   destroyByChar(auxx-move,auxy, 'A');
+                            move++;
+                            break;
+                        case 'D':   destroyByChar(auxx-move,auxy, 'D');
+                            move++;
+                            break;
+                        case 'C':   destroyByChar(auxx-move,auxy, 'C');
+                            move++;
+                            break;
+                        case 'B':   destroyByChar(auxx-move,auxy, 'B');
+                            move++;
+                            break;
+                        case 'S':   destroyByChar(auxx-move,auxy, 'S');
+                            move++;
+                            break;
+                    }
+                }else{
+                    System.out.println("\t tipo: "+tipo+", destroy en ["+(auxx - move)+"]["+auxy+"]");
+                    t[auxx-move][auxy] = 'X';
                     move++;
+                    cant--;
+                }
+
+                if (aux=='0'){
                     t[auxx-move][auxy]='f';
+                    move++;
                     break;
                 }
+            }else{
+                break;
             }
-            break;
         }
         move=1;
         //Try Right
-        while (cant_S!=0 && auxx+cant_S<=11){
+        while (cant!=0 && auxx+cant<=11){
             if (color_map[auxx+move][auxy]!=0) {
                 aux=game.disparo(auxx+move,auxy);
-                switch (aux){
-                    case 'A':   destroyA(auxx+move,auxy);
-                        move++;
-                        break;
-                    case 'D':   destroyD(auxx+move,auxy);
-                        move++;
-                        break;
-                    case 'C':   destroyC(auxx+move,auxy);
-                        move++;
-                        break;
-                    case 'B':   destroyB(auxx+move,auxy);
-                        move++;
-                        break;
-                    case 'S':   move++;
-                        cant_S--;
-                        t[auxx+move][auxy]='X';
-                        break;
+                if(aux != tipo){
+                    switch (aux){
+                        case 'A':   destroyByChar(auxx+move,auxy, 'A');
+                            move++;
+                            break;
+                        case 'D':   destroyByChar(auxx+move,auxy, 'D');
+                            move++;
+                            break;
+                        case 'C':   destroyByChar(auxx+move,auxy, 'C');
+                            move++;
+                            break;
+                        case 'B':   destroyByChar(auxx+move,auxy, 'B');
+                            move++;
+                            break;
+                        case 'S':   destroyByChar(auxx+move,auxy, 'S');
+                            move++;
+                            break;
+                    }
+                }else{
+                    System.out.println("\t tipo: "+tipo+", destroy en ["+(auxx + move)+"]["+auxy+"]");
+                    t[auxx+move][auxy]='X';
+                    move++;
+                    cant--;
                 }
                 if (aux=='0'){
-                    move++;
                     t[auxx+move][auxy]='f';
+                    move++;
                     break;
                 }
-            }
-        }
-    }
-
-    private static void destroyC(int auxx, int auxy) {
-        System.out.println("destroyC");
-        int move=1;
-        char aux;
-        cant_C--;
-        t[auxx][auxy]='X';
-        //Try up
-        while (cant_C!=0 && auxy-move>=1){
-            aux=game.disparo(auxx,auxy-move);
-            switch (aux){
-                case 'A':   destroyA(auxx,auxy-move);
-                    move++;
-                    break;
-                case 'D':   destroyD(auxx,auxy-move);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx,auxy-move);
-                    move++;
-                    break;
-                case 'B':   destroyB(auxx,auxy-move);
-                    move++;
-                    break;
-                case 'C':   move++;
-                    cant_C--;
-                    t[auxx][auxy-move]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx][auxy-move]='f';
-                break;
-            }
-
-        }
-        move=1;
-        //Try down
-        while (cant_C!=0 && auxy+cant_C<=11){
-            aux=game.disparo(auxx,auxy+move);
-            switch (aux){
-                case 'A':   destroyA(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'D':   destroyD(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'B':   destroyB(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'C':   move++;
-                    cant_C--;
-                    t[auxx][auxy+move]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx][auxy+move]='f';
-                break;
-            }
-        }
-        move=1;
-        //Try left
-        while (cant_C!=0 && auxx-cant_C>=1){
-            aux=game.disparo(auxx-move,auxy);
-            switch (aux){
-                case 'A':   destroyA(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'D':   destroyD(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'B':   destroyB(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'C':   move++;
-                    cant_C--;
-                    t[auxx-move][auxy]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx-move][auxy]='f';
-                break;
-            }
-        }
-        move=1;
-        //Try Right
-        while (cant_C!=0 && auxx+cant_C<=11){
-            aux=game.disparo(auxx+move,auxy);
-            switch (aux){
-                case 'A':   destroyA(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'D':   destroyD(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'B':   destroyB(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'C':   move++;
-                    cant_C--;
-                    t[auxx+move][auxy]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx+move][auxy]='f';
-                break;
-            }
-        }
-    }
-
-    private static void destroyD(int auxx, int auxy) {
-        System.out.println("destroyD");
-        int move=1;
-        char aux;
-        cant_D--;
-        t[auxx][auxy]='X';
-        //Try up
-        while (cant_D!=0 && auxy-move>=1){
-            aux=game.disparo(auxx,auxy-move);
-            switch (aux){
-                case 'A':   destroyA(auxx,auxy-move);
-                    move++;
-                    break;
-                case 'C':   destroyC(auxx,auxy-move);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx,auxy-move);
-                    move++;
-                    break;
-                case 'B':   destroyB(auxx,auxy-move);
-                    move++;
-                    break;
-                case 'D':   move++;
-                    cant_D--;
-                    t[auxx][auxy-move]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx][auxy-move]='f';
-                break;
-            }
-
-        }
-        move=1;
-        //Try down
-        while (cant_D!=0 && auxy+cant_D<=11){
-            aux=game.disparo(auxx,auxy+move);
-            switch (aux){
-                case 'A':   destroyA(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'C':   destroyC(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'B':   destroyB(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'D':   move++;
-                    cant_D--;
-                    t[auxx][auxy+move]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx][auxy+move]='f';
-                break;
-            }
-        }
-        move=1;
-        //Try left
-        while (cant_D!=0 && auxx-cant_D>=1){
-            aux=game.disparo(auxx-move,auxy);
-            switch (aux){
-                case 'A':   destroyA(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'C':   destroyC(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'B':   destroyB(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'D':   move++;
-                    cant_D--;
-                    t[auxx-move][auxy]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx-move][auxy]='f';
-                break;
-            }
-        }
-        move=1;
-        //Try Right
-        while (cant_D!=0 && auxx+cant_D<=11){
-            aux=game.disparo(auxx+move,auxy);
-            switch (aux){
-                case 'A':   destroyA(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'C':   destroyC(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'B':   destroyB(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'D':   move++;
-                    cant_D--;
-                    t[auxx+move][auxy]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx+move][auxy]='f';
-                break;
-            }
-        }
-    }
-
-    private static void destroyB(int auxx, int auxy) {
-        System.out.println("destroyB");
-        int move=1;
-        char aux;
-        cant_B--;
-        t[auxx][auxy]='X';
-        //Try up
-        while (cant_B!=0 && auxy-move>=1){
-            aux=game.disparo(auxx,auxy-move);
-            switch (aux){
-                case 'A':   destroyA(auxx,auxy-move);
-                    move++;
-                    break;
-                case 'C':   destroyC(auxx,auxy-move);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx,auxy-move);
-                    move++;
-                    break;
-                case 'D':   destroyD(auxx,auxy-move);
-                    move++;
-                    break;
-                case 'B':   move++;
-                    cant_B--;
-                    t[auxx][auxy-move]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx][auxy-move]='f';
-                break;
-            }
-
-        }
-        move=1;
-        //Try down
-        while (cant_B!=0 && auxy+cant_B<=11){
-            aux=game.disparo(auxx,auxy+move);
-            switch (aux){
-                case 'A':   destroyA(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'C':   destroyC(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'D':   destroyD(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'B':   move++;
-                    cant_B--;
-                    t[auxx][auxy+move]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx][auxy+move]='f';
-                break;
-            }
-        }
-        move=1;
-        //Try left
-        while (cant_B!=0 && auxx-cant_B>=1){
-            aux=game.disparo(auxx-move,auxy);
-            switch (aux){
-                case 'A':   destroyA(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'C':   destroyC(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'D':   destroyD(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'B':   move++;
-                    cant_B--;
-                    t[auxx-move][auxy]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx-move][auxy]='f';
-                break;
-            }
-        }
-        move=1;
-        //Try Right
-        while (cant_B!=0 && auxx+cant_B<=11){
-            aux=game.disparo(auxx+move,auxy);
-            switch (aux){
-                case 'A':   destroyA(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'C':   destroyC(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'D':   destroyD(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'B':   move++;
-                    cant_B--;
-                    t[auxx+move][auxy]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx+move][auxy]='f';
-                break;
-            }
-        }
-    }
-
-    private static void destroyA(int auxx, int auxy) {
-        System.out.println("destroyA");
-        int move=1;
-        char aux;
-        cant_A--;
-        t[auxx][auxy]='X';
-        //Try up
-        while (cant_A!=0 && auxy-move>=1){
-            aux=game.disparo(auxx,auxy-move);
-            switch (aux){
-                case 'B':   destroyB(auxx,auxy-move);
-                            move++;
-                            break;
-                case 'C':   destroyC(auxx,auxy-move);
-                            move++;
-                            break;
-                case 'S':   destroyS(auxx,auxy-move);
-                            move++;
-                            break;
-                case 'D':   destroyD(auxx,auxy-move);
-                            move++;
-                            break;
-                case 'A':   move++;
-                            cant_A--;
-                            t[auxx][auxy-move]='X';
-                            break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx][auxy-move]='f';
-                break;
-            }
-
-        }
-        move=1;
-        //Try down
-        while (cant_A!=0 && auxy+cant_A<=11){
-            aux=game.disparo(auxx,auxy+move);
-            switch (aux){
-                case 'B':   destroyB(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'C':   destroyC(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'D':   destroyD(auxx,auxy+move);
-                    move++;
-                    break;
-                case 'A':   move++;
-                    cant_A--;
-                    t[auxx][auxy+move]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx][auxy+move]='f';
-                break;
-            }
-        }
-        move=1;
-        //Try left
-        while (cant_A!=0 && auxx-cant_A>=1){
-            aux=game.disparo(auxx-move,auxy);
-            switch (aux){
-                case 'B':   destroyB(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'C':   destroyC(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'D':   destroyD(auxx-move,auxy);
-                    move++;
-                    break;
-                case 'A':   move++;
-                    cant_A--;
-                    t[auxx-move][auxy]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx-move][auxy]='f';
-                break;
-            }
-        }
-        move=1;
-        //Try Right
-        while (cant_A!=0 && auxx+cant_A<=11){
-            aux=game.disparo(auxx+move,auxy);
-            switch (aux){
-                case 'B':   destroyB(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'C':   destroyC(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'S':   destroyS(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'D':   destroyD(auxx+move,auxy);
-                    move++;
-                    break;
-                case 'A':   move++;
-                    cant_A--;
-                    t[auxx+move][auxy]='X';
-                    break;
-            }
-            if (aux=='0'){
-                move++;
-                t[auxx+move][auxy]='f';
+            }else{
                 break;
             }
         }
@@ -723,19 +291,23 @@ public class test {
     }
 
 public static void main(String[] args){
+
+    // Tablero del juego
     game = new Tablero(10);
 
     char aux;
     int n=10;
     int suma=0;
+    // Creacion de tablero fantasma
     t = new char[n+2][n+2];
+    // Inicializa tablero fantasma
     for(int i=1;i<n+1;i++)
         for(int j=1;j<n+1;j++)
             t[i][j]= '0';
+
+        // Creacion de mapa de calor
     color_map=new int[12][12];
-    for(int juegos=1; juegos<=1;juegos++){
-
-
+    for(int juegos=1; juegos<=10;juegos++){
         while (game.ganar()==0) {
             color_map = goWhite(color_map);
             for (int i = 0; i < 100; i += 1) {
@@ -746,6 +318,11 @@ public static void main(String[] args){
                 if(cant_C!=0)while (!FakeubicarNave(cant_C, 'C')) ;
                 if(cant_S!=0)while (!FakeubicarNave(cant_S, 'S')) ;
                 if(cant_D!=0)while (!FakeubicarNave(cant_D, 'D')) ;
+//                while (!FakeubicarNave(cant_A, 'A')) ;
+//                while (!FakeubicarNave(cant_B, 'B')) ;
+//                while (!FakeubicarNave(cant_C, 'C')) ;
+//                while (!FakeubicarNave(cant_S, 'S')) ;
+//                while (!FakeubicarNave(cant_D, 'D')) ;
                 color_map = mapper(color_map);
                 resetTable();
             }
@@ -762,14 +339,14 @@ public static void main(String[] args){
                     }
                 }
             }
-            color_map[auxx][auxy]=0;
-            //System.out.println("t["+auxx+"]["+auxy+"] = "+game.t[auxx][auxy]);
+            // color_map[auxx][auxy]=0;
+            // System.out.println("t["+auxx+"]["+auxy+"] = "+game.t[auxx][auxy]);
             destroy(auxx,auxy);
-            /*System.out.println("resultado tiro "+aux+  " A :"+ cant_A + " B: "+ cant_B+" C: " + cant_C +" s: "+ cant_S + " D: " + cant_D);
-            System.out.println("estado actual del mapa");
+            //System.out.println("resultado tiro "+aux+  " A :"+ cant_A + " B: "+ cant_B+" C: " + cant_C +" s: "+ cant_S + " D: " + cant_D);
+            /*System.out.println("estado actual del mapa");
             for(int i=1;i<t.length-1;i++){
                 for(int j=1;j<t.length-1;j++)
-                    System.out.print(t[i][j] + " ");
+                    System.out.print(game.t[i][j] + "("+color_map[i][j]+") ");
                 System.out.println("");
             }*/
 
@@ -777,7 +354,7 @@ public static void main(String[] args){
         }
         suma+=game.ganar();
     }
-    System.out.println("promedio es: "+ suma);
+    System.out.println("promedio es: "+ suma/10);
 }
 
 }
