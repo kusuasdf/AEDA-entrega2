@@ -282,7 +282,7 @@ public class test {
      public boolean FakeubicarNave(int l, char tipo){
         try{
             int x = 1+generator.nextInt(t.length-2);
-         int y = 1+generator.nextInt(t.length-2);
+            int y = 1+generator.nextInt(t.length-2);
         //System.out.println(x + "=x ;  y=" + y+ " ; l= "+l);
          int dir = generator.nextInt(4);
          //if(t[x-1][y]!='0' || t[x+1][y]!='0' || t[x][y-1]!='0' || t[x][y+1]!='0') return false;
@@ -319,7 +319,7 @@ public class test {
          return true;
         }
         catch (Exception e){
-            System.out.println("Se cayó en ubicar naves: "+e.getMessage());
+            System.out.println("Se cayó en ubicar naves: "+e);
            // System.out.println("error al crear tablero fantasma");
             return true;
         }
@@ -337,14 +337,19 @@ public class test {
     public test(int n){
         if(n<10) n = 10;
         t = new char[n+2][n+2];
-        for(int i=1;i<n+1;i++)
-            for(int j=1;j<n+1;j++)
-                t[i][j]= '0';
-        /*while (!FakeubicarNave(5, 'A')) ;
+        for(int i=1;i<n+1;i++){
+            for(int j=1;j<n+1;j++){
+                if(t[i][j] != 'X' && t[i][j] != 'f'){
+                    t[i][j]= '0';
+                }
+            }
+        }
+
+        while (!FakeubicarNave(5, 'A')) ;
         while (!FakeubicarNave(4, 'B')) ;
         while (!FakeubicarNave(3, 'C')) ;
         while (!FakeubicarNave(3, 'S')) ;
-        while (!FakeubicarNave(2, 'D')) ;*/
+        while (!FakeubicarNave(2, 'D')) ;
     }
 
 public static void main(String[] args) {
@@ -368,23 +373,15 @@ public static void main(String[] args) {
             color_map = goWhite(color_map);
             for (int i = 0; i < 100; i += 1) {
                 fantasma = new test(10);
-                //System.out.println("mapa " +i);
-                /*if(cant_A!=0)while (!FakeubicarNave(cant_A, 'A')) ;
-                if(cant_B!=0)while (!FakeubicarNave(cant_B, 'B')) ;
-                if(cant_C!=0)while (!FakeubicarNave(cant_C, 'C')) ;
-                if(cant_S!=0)while (!FakeubicarNave(cant_S, 'S')) ;
-                if(cant_D!=0)while (!FakeubicarNave(cant_D, 'D')) ;
-                if(cant != 0){
-
-                }*/
+                /*
                 while (!fantasma.FakeubicarNave(5, 'A')) ;
                 while (!fantasma.FakeubicarNave(4, 'B')) ;
                 while (!fantasma.FakeubicarNave(3, 'C')) ;
                 while (!fantasma.FakeubicarNave(3, 'S')) ;
                 while (!fantasma.FakeubicarNave(2, 'D')) ;
+                */
                 color_map = fantasma.mapper(color_map);
-                fantasma.resetTable();
-                //resetTable();
+                // fantasma.resetTable();
             }
             int max = color_map[1][1];
             int auxx = 0;
@@ -398,7 +395,6 @@ public static void main(String[] args) {
                     }
                 }
             }
-            // System.out.println("Se destruirá t["+auxx+"]["+auxy+"] con valor: "+ t[auxx][auxy]);
 
 
             if(fantasma.t[auxx][auxy] != 'X' && fantasma.t[auxx][auxy] != 'f' && game.t[auxx][auxy] != 'X'){
@@ -417,11 +413,9 @@ public static void main(String[] args) {
                     System.out.print(game.t[i][j] + "("+color_map[i][j]+") ");
                 System.out.println("");
             }*/
-
-            //myObj.nextLine();
         }
         suma+=game.ganar();
-        System.out.println("total: "+game.ganar()+"| promedio momentaneo: "+(suma/juegos));
+        System.out.println("\ttotal: "+game.ganar()+"\tpromedio momentaneo: "+(suma/juegos));
     }
     System.out.println("promedio es: "+ suma/100);
 }
