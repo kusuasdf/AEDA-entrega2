@@ -61,14 +61,14 @@ public class Tablero{
     for(int i=1;i<t[0].length-1;i++)
       for(int j=1;j<t.length-1;j++)
         if(t[i][j]!='0' && t[i][j]!='X') return 0;
-    //Imprimir();
+    // Imprimir();
     return intentos;
   }
   public void Imprimir(){
     for(int i=1;i<t[0].length-1;i++){
       for(int j=1;j<t.length-1;j++)
       	System.out.print(t[i][j] + " ");
-      System.out.println("");
+      System.out.println(" ");
     }
   }
 }

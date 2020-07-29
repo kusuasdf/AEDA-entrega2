@@ -290,53 +290,53 @@ public class test {
         t = new char[n + 2][n + 2];
         for (int i = 1; i < n + 1; i++) {
             for (int j = 1; j < n + 1; j++) {
-                    t[i][j] = '0';
+                t[i][j] = '0';
             }
         }
     }
 
     public static void main(String[] args) {
-    int n=10;
-    int tiros_totales=0;
-    game=new Tablero[100000];
-    fantasma=new test[100000];
-    for(int games=1;games<=100000;games++){
-        game[games-1] = new Tablero(10);
-        fantasma[games-1]=new test(10);
-        color_map=new int[n+2][n+2];
-        int auxx= 0;
-        int auxy= 0;
-       A = true;
-       B = true;
-       C = true;
-       S = true;
-       D = true;
-        while (game[games-1].ganar()==0) {
-            color_map= fantasma[games-1].goWhite(color_map);
+        int n=10;
+        int tiros_totales=0;
+        game=new Tablero[100000];
+        fantasma=new test[100000];
+        for(int games=1;games<=100000;games++){
+            game[games-1] = new Tablero(10);
+            fantasma[games-1]=new test(10);
+            color_map=new int[n+2][n+2];
+            int auxx= 0;
+            int auxy= 0;
+            A = true;
+            B = true;
+            C = true;
+            S = true;
+            D = true;
+            while (game[games-1].ganar()==0) {
+                color_map= fantasma[games-1].goWhite(color_map);
 
-            if(fantasma[games-1].A) todas_posibilidades(5,'A',games);
-            if(fantasma[games-1].B) todas_posibilidades(4,'B',games);
-            if(fantasma[games-1].C) todas_posibilidades(3,'C',games);
-            if(fantasma[games-1].S) todas_posibilidades(3,'S',games);
-            if(fantasma[games-1].D) todas_posibilidades(2,'D',games);
+                if(fantasma[games-1].A) todas_posibilidades(5,'A',games);
+                if(fantasma[games-1].B) todas_posibilidades(4,'B',games);
+                if(fantasma[games-1].C) todas_posibilidades(3,'C',games);
+                if(fantasma[games-1].S) todas_posibilidades(3,'S',games);
+                if(fantasma[games-1].D) todas_posibilidades(2,'D',games);
 
-            int max=-999;
-            auxx = 0;
-            auxy = 0;
-            for (int i=0; i<n+2;i++){
-                for (int j=0; j<n+2;j++){
-                    if (color_map[i][j]>max){
-                        max=color_map[i][j];
-                        auxx=i;
-                        auxy=j;
+                int max=-999;
+                auxx = 0;
+                auxy = 0;
+                for (int i=0; i<n+2;i++){
+                    for (int j=0; j<n+2;j++){
+                        if (color_map[i][j]>max){
+                            max=color_map[i][j];
+                            auxx=i;
+                            auxy=j;
+                        }
                     }
-                }
-            }//
-            System.out.println("juego " + games + " disparando a "+ auxx+ " "+ auxy);
-            fantasma[games-1].destroy(auxx,auxy,games);
+                }//
+                System.out.println("juego " + games + " disparando a "+ auxx+ " "+ auxy);
+                fantasma[games-1].destroy(auxx,auxy,games);
+            }
+            tiros_totales+=game[games-1].ganar();
         }
-        tiros_totales+=game[games-1].ganar();
-    }
         System.out.println("promedio tiros= " + tiros_totales/100000);
     }
 
