@@ -331,7 +331,7 @@ public class test {
                         auxy=j;
                     }
                 }
-            }
+            }//
             System.out.println("juego " + games + " disparando a "+ auxx+ " "+ auxy);
             fantasma[games-1].destroy(auxx,auxy,games);
         }
